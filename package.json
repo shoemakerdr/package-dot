@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src/**",
     "test": "mocha --require babel-register --recursive || true"
   },
   "keywords": [],
