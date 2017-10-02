@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint src/**",
-    "test": "mocha --require babel-register --recursive || true"
+    "test": "mocha -R dot --require babel-register --recursive || true",
+    "wtest": "mocha -R dot --require babel-register --recursive --watch || true"
   },
   "keywords": [],
   "author": "",
