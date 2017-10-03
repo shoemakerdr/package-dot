@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint src/**",
     "test": "mocha -R dot --require babel-register --recursive || true",
-    "wtest": "mocha -R dot --require babel-register --recursive --watch || true"
+    "watch": "mocha -R dot --require babel-register --recursive --watch || true"
   },
   "keywords": [],
   "author": "",
