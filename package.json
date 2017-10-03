@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src/**",
+    "lint": "eslint src/*.js || true",
     "test": "mocha -R dot --require babel-register --recursive || true",
     "watch": "mocha -R dot --require babel-register --recursive --watch || true"
   },
