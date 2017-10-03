@@ -77,4 +77,62 @@ describe('#addTo', function () {
         pd.addTo({c:3}, 'b')
         assert.deepEqual(pd.getPackage(), withAdded)
     })
+
+    it('will throw an error if the given target does not exist', function () {
+        const add = () => pd.addTo({a:1}, 'q')
+        assert.throws(add, 'Cannot add to key that does not exist')
+    })
+
+    it('will throw an error if the value given is not an object', function () {
+        const add = () => pd.addTo(3, 'b')
+        assert.throws(add, 'Cannot resolve addTo. Entry must be object.')
+    })
+})
+
+describe('#remove', function () {
+    const json = JSON.stringify({a:1,b:{a:1}})
+    const pd = new PackageDot(json)
+
+    it('returns itself so it can be chained', function () {
+        assert.isTrue(pd.remove('b') instanceof PackageDot)
+    })
+    
+    it('will remove a given key from the package object', function () {
+        const withRemoved = {b:2}
+        pd.add({b:2})
+        pd.remove('a')
+        assert.deepEqual(pd.getPackage(), withRemoved)
+    })
+})
+
+describe('#removeFrom', function () {
+    const json = JSON.stringify({a:1,b:{a:1,c:3}})
+    const pd = new PackageDot(json)
+
+    it('returns itself so it can be chained', function () {
+        assert.isTrue(pd.removeFrom('c','b') instanceof PackageDot)
+    })
+
+    it('will remove an entry from an object nested in the package object', function () {
+        const withRemoved = {a:1,b:{a:1}}
+        pd.addTo({b:2},'b')
+        pd.removeFrom('b','b')
+        assert.deepEqual(pd.getPackage(), withRemoved)
+    })
+
+    it('will remove an entry from an array in the package object', function () {
+        const withRemoved = {a:1,b:{a:1},c:[1,2]}
+        pd.add({c:[1,2,3]})
+        pd.removeFrom(3,'c')
+        assert.deepEqual(pd.getPackage(), withRemoved)
+    })
+})
+
+describe('#toJSON', function () {
+    const json = JSON.stringify({a:1,b:{a:1,c:3}})
+    const pd = new PackageDot(json)
+
+    it('will return the JSON version of the package', function () {
+        assert.deepEqual(pd.toJSON(), json)
+    })
 })
