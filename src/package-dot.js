@@ -2,8 +2,10 @@ class PackageDot {
     constructor (pkg) {
         this.getPackage = this.getPackage.bind(this)
         this.add = this.add.bind(this)
-        this.update = this.update.bind(this)
+        this.addTo = this.addTo.bind(this)
+        this.pushTo = this.pushTo.bind(this)
         this.remove = this.remove.bind(this)
+        this.removeFrom = this.removeFrom.bind(this)
         this.toJSON = this.toJSON.bind(this)
         this.pkg = JSON.parse(pkg)
     }
@@ -21,6 +23,8 @@ class PackageDot {
         if (!this.pkg[target]) {
             throw new Error('Cannot add to key that does not exist')
         }
+        if (typeof obj !== 'object')
+            throw new Error('Cannot resolve addTo. Entry must be object.')
         this.pkg[target] = Object.assign({}, this.pkg[target], obj)
         return this
     }
@@ -34,16 +38,19 @@ class PackageDot {
         return this
     }
 
-    update (key, value) {
-        if (!this.pkg[key]) {
-            throw new Error('Cannot update key that does not exist')
-        }
-        this.pkg = Object.assign({}, {[key]:value}, this.pkg)
+    remove (key) {
+        delete this.pkg[key]
         return this
     }
 
-    remove (key) {
-        delete this.pkg[key]
+    removeFrom (entry, target) {
+        if (Array.isArray(this.pkg[target])) {
+            if (this.pkg[target].indexOf(entry) > -1) {
+                let i = this.pkg[target].indexOf(entry)
+                this.pkg[target].splice(i,1)
+            }
+        }
+        else delete this.pkg[target][entry]
         return this
     }
 
