@@ -1,6 +1,8 @@
 class PackageDot {
     constructor (pkg) {
         this.getPackage = this.getPackage.bind(this)
+        this.getProp = this.getProp.bind(this)
+        this.getPropFrom = this.getPropFrom.bind(this)
         this.add = this.add.bind(this)
         this.addTo = this.addTo.bind(this)
         this.pushTo = this.pushTo.bind(this)
@@ -12,6 +14,20 @@ class PackageDot {
 
     getPackage () {
         return this.pkg
+    }
+
+    getProp (prop) {
+        if (this.pkg[prop] === undefined)
+            throw new Error('Cannot get key that does not exist')
+        return this.pkg[prop]
+    }
+
+    getPropFrom (nestedProp, prop) {
+        if (this.pkg[prop] === undefined)
+            throw new Error('Cannot get key that does not exist')
+        if(this.pkg[prop][nestedProp] === undefined)
+            throw new Error('Cannot get entry that does not exist')
+        return this.pkg[prop][nestedProp]
     }
 
     add (obj) {
