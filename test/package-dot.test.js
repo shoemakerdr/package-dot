@@ -11,6 +11,36 @@ describe('PackageDot', function () {
     })
 })
 
+describe('#getProp', function () {
+    const json = JSON.stringify({a:1,b:2,c:3})
+    const pd = new PackageDot(json)
+
+    it('will return a given property if exists', function () {
+        assert.equal(pd.getProp('a'), 1)
+    })
+    
+    it('will throw error if property does not exists', function () {
+        assert.throws(() => pd.getProp('d'), 'Cannot get key that does not exist')  
+    })
+})
+
+describe('#getPropFrom', function () {
+    const json1 = JSON.stringify({a:1,b:2,c:{a:1,b:2}})
+    const pd1 = new PackageDot(json1)
+    const json2 = JSON.stringify({a:1,b:2,c:[1,2,3]})
+    const pd2 = new PackageDot(json2)
+    it('will return a nested index/property in an existing property', function () {
+        assert.equal(pd1.getPropFrom('a','c'), 1)
+        assert.equal(pd2.getPropFrom(0,'c'), 1)
+    })
+    it('will return undefined if property or nested index/property does not exist', function () {
+        assert.throws(() => pd1.getPropFrom('a','d'), 'Cannot get key that does not exist')
+        assert.throws(() => pd1.getPropFrom('c','c'), 'Cannot get entry that does not exist')
+        assert.throws(() => pd2.getPropFrom(0,'d'), 'Cannot get key that does not exist')
+        assert.throws(() => pd2.getPropFrom(3,'c'), 'Cannot get entry that does not exist')
+    })
+})
+
 describe('#add', function () {
     const json = JSON.stringify({a:1,b:2,c:3})
     const pd = new PackageDot(json)
