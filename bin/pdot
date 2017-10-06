@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+const fs = require('fs')
+const path = require('path')
+const program = require('commander')
+const PackageDot = require('../index')
+
+const CWD = process.cwd()
+const pkg = new PackageDot(fs.readFileSync(path.join(CWD, 'package.json')))
+
+program
+    .version(JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8')).version)
+    .option('-n --name', 'Change name of package')
+    .option('-v --package-version', 'Change version of package')
+    .option('-d --description', 'Change description of package')
+    .option('-m --main', 'Change main of package')
+    .option('-s --scripts', 'Change scripts in package')
+    .option('-k --keywords', 'Change keywords in package')
+    .option('-u --author', 'Change author of package')
+    .option('-l --license', 'Change license of package')
+    .parse(process.argv)
+
+
+console.log(pkg.addTo({lint: 'eslint src/**'}, 'scripts').getPackage())
+process.exit(0)
