@@ -71,7 +71,7 @@ class PackageDot {
     }
 
     toJSON () {
-        return JSON.stringify(this.pkg)
+        return JSON.stringify(this.pkg, null, 2)
     }
 }
 
